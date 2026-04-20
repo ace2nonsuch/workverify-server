@@ -1,47 +1,48 @@
 from flask import Flask, request, jsonify
 import json
-import hashlib
 import os
+import hashlib
 
 app = Flask(__name__)
 
 def load_admins():
-    with open("admins.json", "r") as f:
-        return json.load(f)
+    if os.path.exists('admins.json'):
+        with open('admins.json', 'r') as f:
+            return json.load(f)
+    return []
 
-def hash_pin(pin):
-    return hashlib.sha256(pin.encode()).hexdigest()
+@app.route('/')
+def home():
+    return "WorkVerify Plus Server is Running"
 
-@app.route("/validate-pin", methods=["POST"])
+@app.route('/validate-pin', methods=['POST'])
 def validate_pin():
-    data = request.get_json()
-
-    if not data or "pin" not in data:
-        return jsonify({"valid": False, "message": "No PIN provided"}), 400
-
-    pin = data["pin"].strip()
-
-    if len(pin) != 6 or not pin.isdigit():
-        return jsonify({"valid": False, "message": "PIN must be 6 digits"}), 400
-
-    hashed = hash_pin(pin)
+    data = request.json
+    entered_pin = data.get('pin', '')
+    entered_name = data.get('admin_name', '').strip().lower()
+    
+    # Hash the PIN sent by the Android app so we can compare it to the stored hash
+    entered_pin_hash = hashlib.sha256(entered_pin.encode()).hexdigest()
+    
     admins = load_admins()
-
+    
+    # Your script generates a LIST of dictionaries, so we iterate through it
     for admin in admins:
-        if admin["pin_hash"] == hashed:
+        record_name = admin.get('name', '').strip().lower()
+        
+        # Match Name and the Hashed PIN
+        if record_name == entered_name and admin.get('pin_hash') == entered_pin_hash:
             return jsonify({
                 "valid": True,
-                "admin_name": admin["name"],
-                "facility": admin["facility"],
-                "admin_id": admin["id"]
-            })
+                "facility": admin.get('facility'),
+                "admin_id": admin.get('id')
+            }), 200
+            
+    return jsonify({
+        "valid": False, 
+        "message": "Incorrect Admin Name or PIN"
+    }), 401
 
-    return jsonify({"valid": False, "message": "Invalid PIN"})
-
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "ok"})
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host='0.0.0.0', port=port)
