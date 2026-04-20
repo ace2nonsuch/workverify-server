@@ -1,14 +1,26 @@
 [
     {
         "id": "ADM001",
-        "name": "Dr. Amara Osei",
-        "facility": "Central Clinic",
-        "pin_hash": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"
+        "name": "ABE-OKE-HOT",
+        "full_facility": "Hotel PHC",
+        "pin_hash": "73ae1d29c882f7e5d99fb09ef49ecb0e9a5e09514c833642e7fb58c372c4a2e7"
     },
     {
         "id": "ADM002",
-        "name": "Nurse Fatima Bello",
-        "facility": "Northern Health Post",
-        "pin_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
+        "name": "ABE-ODO-DMA",
+        "full_facility": "DMA PHC",
+        "pin_hash": "5925a6021a22eb01c1e3f41eb2db955aaa7fec4ce8168b0d2c53cb435c997ac1"
+    },
+    {
+        "id": "ADM003",
+        "name": "ADO-ARI-BOA",
+        "full_facility": "Board PHC",
+        "pin_hash": "0d4c4fd11a76863d8022f7fc8060d33976f76604afb2790c5c11ddadebf2fb4d"
+    },
+    {
+        "id": "ADM004",
+        "name": "ABE-IJE-LAD",
+        "full_facility": "Laderin PHC",
+        "pin_hash": "6d4d2f5a312d8771e5534ce790aba48db9de4a09d9247c84d12cfb580bc04439"
     }
 ]
